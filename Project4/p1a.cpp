@@ -43,7 +43,7 @@ int main()
       cout << "Reading knapsack instance" << endl;
       knapsack k(fin);
 
-	  k.sortKnapsack();
+	  k.bubbleSort();
       int bound = k.bound();
 
 	  cout << "Bound: " << bound << endl;

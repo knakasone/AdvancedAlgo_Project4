@@ -17,7 +17,7 @@ class knapsack
       void unSelect(int);
       bool isSelected(int) const;
 	  int bound();
-	  void bubbleSort(int arr[], int arr2[], int n);
+	  void bubbleSort(int n);
 
    private:
       int numObjects;
@@ -218,16 +218,16 @@ void swap(int *xp, int *yp)
 	*yp = temp;
 }
 //sorting algorithm to sort the knapsack by cost
-void knapsack::bubbleSort(int arr[], int arr2[], int n)
+void knapsack::bubbleSort(int n)
 {
 	int i, j;
 	for (i = 0; i < n - 1; i++)
 
 		// Last i elements are already in place    
 		for (j = 0; j < n - i - 1; j++)
-			if ( (float)(arr[j] / arr2[j]) > (float)(arr[j + 1] / arr2[j + 1])) {
-				swap(&arr[j], &arr[j + 1]);
-				swap(&arr2[j], &arr2[j + 1]);
+			if ( (float)(value[j] / cost[j]) > (float)(value[j + 1] / cost[j + 1])) {
+				swap(&value[j], &value[j + 1]);
+				swap(&cost[j], &cost[j + 1]);
 			}
 }
 
