@@ -26,10 +26,10 @@ int main()
    // Read the name of the file from the keyboard or
    // hard code it here for testing.
    
-   // fileName = "knapsack16.input";
+    fileName = "knapsack8.input";
 
-   cout << "Enter filename" << endl;
-   cin >> fileName;
+   //cout << "Enter filename" << endl;
+   //cin >> fileName;
    
    fin.open(fileName.c_str());
    if (!fin)
@@ -43,7 +43,10 @@ int main()
       cout << "Reading knapsack instance" << endl;
       knapsack k(fin);
 
-      k.bound();
+	  k.sortKnapsack();
+      int bound = k.bound();
+
+	  cout << "Bound: " << bound << endl;
 
       cout << endl << "Best solution" << endl;
       k.printSolution();

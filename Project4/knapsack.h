@@ -17,6 +17,7 @@ class knapsack
       void unSelect(int);
       bool isSelected(int) const;
 	  int bound();
+	  void sortKnapsack();
 
    private:
       int numObjects;
@@ -169,7 +170,7 @@ ostream &operator<<(ostream &ostr, vector<bool> v)
    for (int i = 0; i < v.size(); i++)
       cout << v[i] << endl;
 
-   return ostr
+   return ostr;
 }
 
 void knapsack::select(int i)
@@ -209,7 +210,45 @@ bool knapsack::isSelected(int i) const
    return selected[i];
 }
 
+//sorting algorithm to sort the knapsack by cost
+void knapsack::sortKnapsack()
+{
+	int key_c, key_v;
+	for (int i = 0; i < numObjects; i++) {
+		key_c = cost[i];
+		key_v = value[i];
+		int j = i - 1;
+
+		int ratioI = value[i] / cost[i];
+		int ratioJ = value[j] / cost[j];
+
+		while (j >= 0 && ratioJ > ratioI) {
+			cost[j + 1] = cost[j];
+			value[j + 1] = value[j];
+			j = j - 1;
+		}
+		cost[j + 1] = key_c;
+		value[j + 1] = key_v;
+		unSelect(i);
+	}
+}
+
+//returns upper bound on the value of objects in optimal subset
 int knapsack::bound()
 {
+	int numObjects = getNumObjects();
+	int costLimit = getCostLimit();
+	int optimalBound = 0;
+	int currCost = 0;
+	for (int i = 0; i < numObjects; i++) {
+		if (cost[i] + currCost < costLimit) {
+			currCost = currCost + cost[i];
+			optimalBound = optimalBound + value[i];
+		}
+		else {
+			break;
+		}
+	}
 
+	return optimalBound;
 }
