@@ -219,13 +219,17 @@ void knapsack::sortKnapsack()
 		key_v = value[i];
 		int j = i - 1;
 
-		int ratioI = value[i] / cost[i];
-		int ratioJ = value[j] / cost[j];
+		while (j >= 0) {
 
-		while (j >= 0 && ratioJ > ratioI) {
-			cost[j + 1] = cost[j];
-			value[j + 1] = value[j];
-			j = j - 1;
+			int ratioI = value[i] / cost[i];
+			int ratioJ = value[j] / cost[j];
+
+			if (ratioJ > ratioI) {
+				cost[j + 1] = cost[j];
+				value[j + 1] = value[j];
+				j = j - 1;
+			}
+
 		}
 		cost[j + 1] = key_c;
 		value[j + 1] = key_v;
