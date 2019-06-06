@@ -224,13 +224,16 @@ void knapsack::sortKnapsack()
 			int ratioI = value[i] / cost[i];
 			int ratioJ = value[j] / cost[j];
 
-			if (ratioJ > ratioI) {
+			if (ratioJ < ratioI) {
 				cost[j + 1] = cost[j];
 				value[j + 1] = value[j];
 				j = j - 1;
 			}
 
 		}
+
+		cout << cost[i] <<endl;
+
 		cost[j + 1] = key_c;
 		value[j + 1] = key_v;
 		unSelect(i);
