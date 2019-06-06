@@ -43,7 +43,7 @@ int main()
       cout << "Reading knapsack instance" << endl;
       knapsack k(fin);
 
-      bound(k);
+      k.bound();
 
       cout << endl << "Best solution" << endl;
       k.printSolution();

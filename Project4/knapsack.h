@@ -16,7 +16,7 @@ class knapsack
       void select(int);
       void unSelect(int);
       bool isSelected(int) const;
-	  int bound(knapsack);
+	  int bound();
 
    private:
       int numObjects;
@@ -209,7 +209,7 @@ bool knapsack::isSelected(int i) const
    return selected[i];
 }
 
-int knapsack::bound(knapsack k)
+int knapsack::bound()
 {
 
 }
