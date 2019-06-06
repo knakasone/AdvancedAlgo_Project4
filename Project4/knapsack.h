@@ -17,7 +17,7 @@ class knapsack
       void unSelect(int);
       bool isSelected(int) const;
 	  int bound();
-	  void sortKnapsack();
+	  void bubbleSort(int n);
 
    private:
       int numObjects;
@@ -157,9 +157,12 @@ void knapsack::printSolution()
    cout << "Total cost: " << getCost() << endl << endl;
 
    // Print out objects in the solution
-   for (int i = 0; i < getNumObjects(); i++)
-      if (isSelected(i))
-	 cout << i << "  " << getValue(i) << " " << getCost(i) << endl;
+   for (int i = 0; i < getNumObjects(); i++) {
+	   if (isSelected(i)) {
+		   cout << i << "  " << getValue(i) << " " << getCost(i) << endl;
+	   }
+	   cout << "Ratio " << (float) getValue(i) / getCost(i) << endl; 
+   }
 
    cout << endl;
 }
@@ -210,34 +213,25 @@ bool knapsack::isSelected(int i) const
    return selected[i];
 }
 
-//sorting algorithm to sort the knapsack by cost
-void knapsack::sortKnapsack()
+
+void swap(int *xp, int *yp)
 {
-	int key_c, key_v;
-	for (int i = 0; i < numObjects; i++) {
-		key_c = cost[i];
-		key_v = value[i];
-		int j = i - 1;
+	int temp = *xp;
+	*xp = *yp;
+	*yp = temp;
+}
+//sorting algorithm to sort the knapsack by cost
+void knapsack::bubbleSort(int n)
+{
+	int i, j;
+	for (i = 0; i < n - 1; i++)
 
-		while (j >= 0) {
-
-			int ratioI = value[i] / cost[i];
-			int ratioJ = value[j] / cost[j];
-
-			if (ratioJ < ratioI) {
-				cost[j + 1] = cost[j];
-				value[j + 1] = value[j];
-				j = j - 1;
+		// Last i elements are already in place    
+		for (j = 0; j < n - i - 1; j++)
+			if ((float) ((float)(value[j] / (float)cost[j]) < (float)(value[j + 1] /(float) cost[j + 1]))) {
+				swap(&value[j], &value[j + 1]);
+				swap(&cost[j], &cost[j + 1]);
 			}
-
-		}
-
-		cout << cost[i] <<endl;
-
-		cost[j + 1] = key_c;
-		value[j + 1] = key_v;
-		unSelect(i);
-	}
 }
 
 //returns upper bound on the value of objects in optimal subset
