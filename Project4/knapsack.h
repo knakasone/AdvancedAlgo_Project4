@@ -18,6 +18,10 @@ class knapsack
       bool isSelected(int) const;
 	  int bound();
 	  void bubbleSort(int n);
+	  int initialSol();
+	  bool isFeasible(int);
+	  vector<bool> isFractional;
+	  bool isIntegral();
 
    private:
       int numObjects;
@@ -246,26 +250,73 @@ int knapsack::bound()
 {
 	int numObjects = getNumObjects();
 	int costLimit = getCostLimit();
-	int optimalBound = 0;
+	float optimalBound = 0;
 	int currCost = 0;
+	for (int i = 0; i < numObjects; i++) {
+		if (isSelected(i)) {
+			if (cost[i] + currCost <= costLimit) {
+				currCost = currCost + cost[i];
+				optimalBound = optimalBound + value[i];
+			}
+			else {
+				int diffCost = costLimit - currCost;
+				float ratio = ((float)diffCost / (float)cost[i]);
+				optimalBound = optimalBound + ((float)value[i] * ratio);
+				currCost = currCost + ((float)cost[i] * ratio);
+				isFractional[i] = true;
+
+				break;
+			}
+		}
+		
+	}
+	cout << "Cost Limit: " << costLimit << endl;
+	cout << "Cost: " << currCost << endl;
+	cout << "bound: " << optimalBound << endl;
+	
+
+	return optimalBound;
+}
+
+int knapsack::initialSol() {
+	int numObjects = getNumObjects();
+	int costLimit = getCostLimit();
+	float optimalVal = 0;
+	int currCost = 0;
+
 	for (int i = 0; i < numObjects; i++) {
 		if (cost[i] + currCost < costLimit) {
 			currCost = currCost + cost[i];
-			optimalBound = optimalBound + value[i];
+			optimalVal = optimalVal + value[i];
 		}
 		else {
-			int diffCost = costLimit - currCost;
-			float ratio = (float) diffCost / (float) cost[i];
-			optimalBound = optimalBound + (value[i] * ratio);
-			//currCost = currCost + (cost[i] * ratio);
-			
 			break;
 		}
 	}
-	//cout << "Cost Limit: " << costLimit << endl;
-	//cout << "Cost: " << currCost << endl;
+		return optimalVal;
+}
 
-	return optimalBound;
+bool knapsack::isFeasible(int n) {
+	int numObjects = getNumObjects();
+	int costLimit = getCostLimit();
+	int currCost = 0;
+
+	for (int i = 0; i < numObjects; i++) {
+		if (isSelected(i)) {
+			currCost = currCost + cost[i];
+		}
+	}
+	return currCost <= n;
+}
+
+bool knapsack::isIntegral() {
+	int r = 0;
+	for (int i = 0; i < getNumObjects(); i++) {
+		if (isFractional[i] == true) {
+			r++;
+		}
+	}
+	return r == 0;
 }
 
 

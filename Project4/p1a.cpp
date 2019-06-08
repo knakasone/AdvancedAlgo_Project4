@@ -9,12 +9,48 @@
 #include <vector>
 #include <time.h>
 #include <stack>
+#include <deque>
 
 using namespace std;
 
 #include "d_except.h"
 #include "d_matrix.h"
 #include "knapsack.h"
+
+void branchAndBound(knapsack& k, int t) {
+	deque <knapsack> knapsackDeque;
+	int numObjects = k.getNumObjects();
+	int costLimit = k.getCostLimit();
+	int level = 1;
+
+	//sort the objects from largest to smallest value-cost ratio
+	k.bubbleSort(numObjects);
+	int zStar = k.initialSol();
+	int championIndex = -1;
+
+	while (level < numObjects + 1) {
+		for (int i = 0; i < pow(2, level); i++) {
+			knapsack newKnapsack = knapsack(k);
+			knapsackDeque.push_front(newKnapsack);
+			for (int j = 1; j < level; j++) {
+				if (i % 2 == 1) {
+					newKnapsack.select(j);
+				}
+				int currBound = newKnapsack.bound();
+				if (newKnapsack.isFeasible(costLimit) && newKnapsack.isIntegral() && currBound < zStar) {
+					zStar = currBound;
+					championIndex = i;
+				}
+				if (!newKnapsack.isFeasible(costLimit) || newKnapsack.isIntegral() || currBound > zStar) {
+
+				}
+			}
+
+			level++;
+		}
+		
+	}
+}
 
 int main()
 {
@@ -44,10 +80,9 @@ int main()
       cout << "Reading knapsack instance" << endl;
       knapsack k(fin);
 
-	  k.bubbleSort(k.getNumObjects());
-      int bound = k.bound();
-
-	  cout << "Bound: " << bound << endl;
+	  //k.bubbleSort(k.getNumObjects());
+      //int bound = k.bound();
+	  //cout << "Bound: " << bound << endl;
 
       cout << endl << "Best solution" << endl;
       //k.printSolution(outFile);
