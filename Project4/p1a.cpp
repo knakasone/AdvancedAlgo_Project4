@@ -21,12 +21,13 @@ int main()
    char x;
    ifstream fin;
    stack <int> moves;
-   string fileName;
+   string fileName, outFile;
    
    // Read the name of the file from the keyboard or
    // hard code it here for testing.
    
     fileName = "knapsack8.input";
+	outFile = "test.txt";
 
    //cout << "Enter filename" << endl;
    //cin >> fileName;
@@ -49,7 +50,8 @@ int main()
 	  cout << "Bound: " << bound << endl;
 
       cout << endl << "Best solution" << endl;
-      k.printSolution();
+      //k.printSolution(outFile);
+	  cout << k;
       
    }    
 
