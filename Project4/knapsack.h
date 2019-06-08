@@ -12,7 +12,7 @@ class knapsack
       int getValue() const;
       int getNumObjects() const;
       int getCostLimit() const;
-      void printSolution();
+      void printSolution(string);
       void select(int);
       void unSelect(int);
       bool isSelected(int) const;
@@ -148,23 +148,30 @@ ostream &operator<<(ostream &ostr, const knapsack &k)
    return ostr;
 }
 
-void knapsack::printSolution()
+void knapsack::printSolution(string outFile)
 // Prints out the solution.
 {
-   cout << "------------------------------------------------" << endl;
+	ofstream fout;
+	cout << "opening" << endl;
+	fout.open(outFile);
 
-   cout << "Total value: " << getValue() << endl;
-   cout << "Total cost: " << getCost() << endl << endl;
+	fout << "------------------------------------------------" << endl;
 
-   // Print out objects in the solution
-   for (int i = 0; i < getNumObjects(); i++) {
-	   if (isSelected(i)) {
-		   cout << i << "  " << getValue(i) << " " << getCost(i) << endl;
-	   }
-	   cout << "Ratio " << (float) getValue(i) / getCost(i) << endl; 
-   }
+	fout << "Total value: " << getValue() << endl;
+	fout << "Total cost: " << getCost() << endl << endl;
 
-   cout << endl;
+	// Print out objects in the solution
+	for (int i = 0; i < getNumObjects(); i++) {
+		if (isSelected(i)) {
+			fout << i << "  " << getValue(i) << " " << getCost(i) << endl;
+		}
+		//cout << "Ratio " << (float)getValue(i) / getCost(i) << endl;
+	}
+
+	fout << endl;
+	fout.close();
+	cout << "finished" << endl;
+
 }
 
 ostream &operator<<(ostream &ostr, vector<bool> v)
@@ -247,9 +254,18 @@ int knapsack::bound()
 			optimalBound = optimalBound + value[i];
 		}
 		else {
+			int diffCost = costLimit - currCost;
+			float ratio = (float) diffCost / (float) cost[i];
+			optimalBound = optimalBound + (value[i] * ratio);
+			//currCost = currCost + (cost[i] * ratio);
+			
 			break;
 		}
 	}
+	//cout << "Cost Limit: " << costLimit << endl;
+	//cout << "Cost: " << currCost << endl;
 
 	return optimalBound;
 }
+
+
