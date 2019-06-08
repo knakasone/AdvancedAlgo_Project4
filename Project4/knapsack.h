@@ -247,9 +247,16 @@ int knapsack::bound()
 			optimalBound = optimalBound + value[i];
 		}
 		else {
+			int diffCost = costLimit - currCost;
+			float ratio = (float) diffCost / (float) cost[i];
+			optimalBound = optimalBound + (value[i] * ratio);
+			//currCost = currCost + (cost[i] * ratio);
+			
 			break;
 		}
 	}
+	//cout << "Cost Limit: " << costLimit << endl;
+	//cout << "Cost: " << currCost << endl;
 
 	return optimalBound;
 }
